@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import android.os.Bundle;
@@ -16,15 +17,14 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
     RecyclerView recyclerView;
     EditText search_name;
-    ArrayList<String> names;
-
     My_Custom_Adapter adapter;
 
     @Override
@@ -35,9 +35,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new My_Custom_Adapter(this,Get_ALL_Information());
+
+        List<String> ascending_list = Get_ALL_Information();
+        Collections.sort(ascending_list);
+        for (String myStr: ascending_list) {
+            System.out.print(" " + myStr);
+        }
+
+        adapter = new My_Custom_Adapter(this,ascending_list);
         recyclerView.setAdapter(adapter);
 
+
+        ///** Filter by data***///
         search_name = (EditText) findViewById(R.id.search_name);
         search_name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public List<String> Get_ALL_Information(){
 
         List<String> ApkPackageName = new ArrayList<>();
+        List<String> app_name = new ArrayList<>();
 
         Intent intent = new Intent(Intent.ACTION_MAIN,null);
 
@@ -79,14 +89,11 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED );
 
         List<ResolveInfo> resolveInfoList = getPackageManager().queryIntentActivities(intent,0);
-
         for(ResolveInfo resolveInfo : resolveInfoList){
-
             ActivityInfo activityInfo = resolveInfo.activityInfo;
-
             if(!isSystemPackage(resolveInfo)){
-
                 ApkPackageName.add(activityInfo.applicationInfo.packageName);
+                app_name.add(GetAppName(activityInfo.applicationInfo.packageName));
             }
         }
 
@@ -96,5 +103,29 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isSystemPackage(ResolveInfo resolveInfo){
         return ((resolveInfo.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+    }
+
+    public String GetAppName(String ApkPackageName) {
+
+        String Name = "";
+
+        ApplicationInfo applicationInfo;
+
+        PackageManager packageManager = getPackageManager();
+
+        try {
+
+            applicationInfo = packageManager.getApplicationInfo(ApkPackageName, 0);
+
+            if (applicationInfo != null) {
+
+                Name = (String) packageManager.getApplicationLabel(applicationInfo);
+            }
+
+        } catch (PackageManager.NameNotFoundException e) {
+
+            e.printStackTrace();
+        }
+        return Name;
     }
 }
