@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#dee1e2"
         android:gravity="bottom"
-        android:hint="Enter name "
+        android:hint="Search by app name "
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:paddingBottom="15dp"

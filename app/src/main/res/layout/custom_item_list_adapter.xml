@@ -59,6 +59,31 @@
                         android:text=" Here goes to package name "
                         android:textColor="#000"
                         android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/txt_class_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="19dp"
+                        android:text=" Here goes to class name "
+                        android:textColor="#000"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/txt_version_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Here goes to version code "
+                        android:textColor="#000"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/txt_version_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Here goes to version name "
+                        android:textColor="#000"
+                        android:textSize="13dp" />
+
                 </LinearLayout>
             </LinearLayout>
 
